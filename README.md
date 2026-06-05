@@ -61,26 +61,50 @@ Breadth First Search (BFS) merupakan salah satu algoritma pencarian pada struktu
 
 Dalam penelitian ini, algoritma BFS digunakan untuk menelusuri hubungan antara kriteria yang dipilih pengguna dengan alternatif kost yang tersedia pada Directed Graph. Proses pencarian dimulai dari node kriteria yang dipilih, kemudian BFS akan mengunjungi node-node yang terhubung hingga menemukan alternatif kost yang sesuai. Penggunaan BFS dipilih karena mampu melakukan pencarian secara sistematis dan efisien pada graph. Secara umum, kompleksitas waktu BFS adalah O(V + E), di mana V merupakan jumlah vertex (node) dan E merupakan jumlah edge (sisi), sedangkan kompleksitas ruangnya adalah O(V). Dengan karakteristik tersebut, BFS sesuai digunakan sebagai algoritma utama dalam Sistem Pendukung Keputusan Pemilihan Kost.
 
-## 3.1 Analisis dan perancangan
+## BAB III Analisis dan perancangan
+
+### 3.1 Analisis Masalah
 
 Pemilihan kost merupakan salah satu permasalahan yang sering dihadapi oleh mahasiswa, terutama mahasiswa perantauan. Banyaknya pilihan kost yang tersedia dengan berbagai harga, lokasi, dan fasilitas membuat proses pemilihan menjadi cukup sulit. Calon penghuni harus mempertimbangkan berbagai kriteria, seperti biaya sewa yang terjangkau, jarak yang dekat dengan kampus, serta fasilitas pendukung seperti WiFi dan area parkir. Jika dilakukan secara manual, proses pencarian dan perbandingan berbagai alternatif kost membutuhkan waktu yang cukup lama dan berpotensi menghasilkan keputusan yang kurang optimal.
 
 Berdasarkan permasalahan tersebut, diperlukan sebuah Sistem Pendukung Keputusan (DSS) yang mampu membantu pengguna dalam menentukan kost yang sesuai dengan kebutuhan dan preferensinya. Pada sistem yang dirancang, hubungan antara pengguna, kriteria pemilihan, dan alternatif kost direpresentasikan menggunakan Directed Graph. Setiap kriteria akan terhubung dengan alternatif kost yang memenuhi kriteria tersebut. Selanjutnya, algoritma Breadth First Search (BFS) digunakan untuk menelusuri graph dan menemukan rekomendasi kost berdasarkan pilihan pengguna. Dengan pendekatan ini, proses pemilihan kost dapat dilakukan secara lebih cepat, terstruktur, dan mudah dipahami sehingga membantu pengguna dalam mengambil keputusan yang lebih tepat.
 
-## 3.2 Desain Graph
+### 3.2 Desain Graph
 Pada sistem yang dirancang, graph digunakan untuk merepresentasikan hubungan antara pengguna, kriteria pemilihan kost, dan alternatif kost yang tersedia. Jenis graph yang digunakan adalah Directed Graph (graf berarah), di mana setiap hubungan memiliki arah tertentu dari satu node ke node lainnya. Node pada graph terdiri dari node pengguna, node kriteria, dan node alternatif kost, sedangkan edge digunakan untuk menunjukkan hubungan antar node tersebut.
 Dalam desain graph ini, pengguna dapat memilih satu atau lebih kriteria yang diinginkan, seperti Murah, Dekat Kampus, dan WiFi. Setiap kriteria kemudian dihubungkan dengan alternatif kost yang memenuhi kriteria tersebut.
 
-## 3.3 Flowchart
+### 3.3 Flowchart
 <img width="1024" height="1536" alt="WhatsApp Image 2026-06-05 at 12 31 57" src="https://github.com/user-attachments/assets/22eaaec1-6d8d-429d-90af-7afb0bcf9993" />
 
 
-## 3.4 use case
+### 3.4 use case
 <img width="1536" height="1024" alt="WhatsApp Image 2026-06-05 at 12 31 57" src="https://github.com/user-attachments/assets/8adb5baa-978f-4a6c-a7de-f8e1ea7a490a" />
 
-## 3.5 Struktur Node dan Edge
+### 3.5 Struktur Node dan Edge
 
 Pada Sistem Pendukung Keputusan (DSS) Pemilihan Kost, struktur graph dibangun menggunakan node (vertex) dan edge (sisi) untuk merepresentasikan hubungan antara pengguna, kriteria pemilihan kost, dan alternatif kost yang tersedia. Node yang digunakan terdiri dari User, Murah, Dekat Kampus, WiFi, Kost A, Kost B, Kost C, dan Kost D. Node User merepresentasikan pengguna sistem, node Murah, Dekat Kampus, dan WiFi merepresentasikan kriteria yang dapat dipilih pengguna, sedangkan Kost A, Kost B, Kost C, dan Kost D merupakan alternatif kost yang direkomendasikan oleh sistem.
 
 Hubungan antar node direpresentasikan menggunakan edge yang bersifat berarah (directed). Node User terhubung ke node Murah, Dekat Kampus, dan WiFi sebagai kriteria yang dapat dipilih. Selanjutnya, node Murah terhubung ke Kost A dan Kost C, node Dekat Kampus terhubung ke Kost B dan Kost C, serta node WiFi terhubung ke Kost A dan Kost D. Dengan total 8 node dan 9 edge, struktur Directed Graph ini memungkinkan algoritma Breadth First Search (BFS) melakukan penelusuran hubungan antar node secara sistematis untuk menghasilkan rekomendasi kost yang sesuai dengan kebutuhan dan preferensi pengguna.
+
+## BAB IV Implementasi 
+
+### 4.1 Implementasi Program
+
+Implementasi program dilakukan menggunakan bahasa pemrograman Python dengan framework Streamlit sebagai antarmuka pengguna. Sistem ini dirancang sebagai Decision Support System (DSS) untuk membantu pengguna dalam memilih kost berdasarkan kriteria tertentu. Hubungan antara pengguna, kriteria, dan alternatif kost direpresentasikan menggunakan Directed Graph, sehingga data dapat diorganisasikan dan dikelola secara terstruktur.
+
+Dalam proses penggunaannya, pengguna dapat memilih satu atau lebih kriteria yang tersedia, seperti Murah, Dekat Kampus, dan WiFi. Setelah kriteria dipilih, sistem akan menjalankan algoritma Breadth First Search (BFS) untuk menelusuri node-node yang terhubung pada graph. Hasil penelusuran tersebut digunakan untuk menemukan dan menampilkan alternatif kost yang sesuai dengan kebutuhan serta preferensi pengguna.
+
+Selain menghasilkan rekomendasi kost, sistem juga menampilkan visualisasi Directed Graph menggunakan library NetworkX dan Matplotlib. Visualisasi ini membantu pengguna memahami hubungan antara node kriteria dan alternatif kost yang tersedia. Dengan menggabungkan konsep DSS, struktur data graph, dan algoritma BFS, sistem mampu memberikan rekomendasi kost secara lebih cepat, efektif, dan mudah dipahami oleh pengguna.
+
+### 4.2 Penjelasan Kode
+
+Program DSS Pemilihan Kost dibangun menggunakan bahasa pemrograman Python dengan memanfaatkan beberapa library, yaitu Streamlit untuk membuat antarmuka pengguna, NetworkX untuk membangun dan mengelola graph, Matplotlib untuk menampilkan visualisasi graph, serta collections.deque untuk mendukung implementasi algoritma Breadth First Search (BFS). Pada tahap awal program, dibuat struktur Directed Graph yang berisi hubungan antara node pengguna, kriteria pemilihan kost, dan alternatif kost yang tersedia.
+
+Selanjutnya, program mengimplementasikan algoritma Breadth First Search (BFS) melalui sebuah fungsi yang bertugas menelusuri graph dari node awal yang dipilih pengguna. Algoritma BFS bekerja menggunakan struktur data queue (antrian) untuk mengunjungi node secara bertahap berdasarkan tingkat kedekatannya. Selama proses pencarian, sistem menyimpan node yang telah dikunjungi agar tidak terjadi pengulangan penelusuran. Hasil dari proses BFS berupa daftar alternatif kost yang memenuhi kriteria serta jalur penelusuran yang dilakukan oleh algoritma.
+
+Pada bagian antarmuka, pengguna dapat memilih kriteria kost yang diinginkan melalui fitur yang disediakan oleh Streamlit. Setelah pengguna menjalankan proses pencarian, sistem akan menampilkan rekomendasi kost berdasarkan hasil BFS, jalur penelusuran algoritma, serta visualisasi Directed Graph yang menggambarkan hubungan antar node. Dengan demikian, pengguna tidak hanya memperoleh rekomendasi kost, tetapi juga dapat memahami proses pencarian yang dilakukan oleh sistem secara lebih jelas dan interaktif.
+
+4.3 Tampilan Sistem
+
+
 
