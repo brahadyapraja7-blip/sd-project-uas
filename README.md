@@ -104,7 +104,55 @@ Selanjutnya, program mengimplementasikan algoritma Breadth First Search (BFS) me
 
 Pada bagian antarmuka, pengguna dapat memilih kriteria kost yang diinginkan melalui fitur yang disediakan oleh Streamlit. Setelah pengguna menjalankan proses pencarian, sistem akan menampilkan rekomendasi kost berdasarkan hasil BFS, jalur penelusuran algoritma, serta visualisasi Directed Graph yang menggambarkan hubungan antar node. Dengan demikian, pengguna tidak hanya memperoleh rekomendasi kost, tetapi juga dapat memahami proses pencarian yang dilakukan oleh sistem secara lebih jelas dan interaktif.
 
-4.3 Tampilan Sistem
+### 4.3 Tampilan Sistem
+
+Tampilan sistem dirancang menggunakan framework Streamlit dengan antarmuka yang sederhana dan mudah digunakan. Pada halaman utama, pengguna akan melihat judul aplikasi DSS Pemilihan Kost beserta deskripsi singkat mengenai fungsi sistem. Selanjutnya, pengguna dapat memilih satu atau lebih kriteria kost yang diinginkan, seperti Murah, Dekat Kampus, dan WiFi, melalui komponen checkbox yang telah disediakan. Setelah kriteria dipilih, pengguna dapat menekan tombol pencarian untuk memulai proses rekomendasi kost.
+
+Setelah proses pencarian dijalankan, sistem akan menampilkan hasil rekomendasi kost yang sesuai dengan kriteria yang dipilih pengguna. Selain itu, sistem juga menampilkan proses penelusuran yang dilakukan oleh algoritma Breadth First Search (BFS) sehingga pengguna dapat memahami bagaimana rekomendasi tersebut dihasilkan. Informasi ini ditampilkan secara langsung pada halaman yang sama sehingga memudahkan pengguna dalam melihat hasil analisis yang dilakukan oleh sistem.
+
+Selain menampilkan rekomendasi, sistem menyediakan fitur visualisasi Directed Graph yang menggambarkan hubungan antara pengguna, kriteria pemilihan, dan alternatif kost. Visualisasi graph ditampilkan menggunakan library NetworkX dan Matplotlib sehingga hubungan antar node dapat dipahami dengan lebih jelas. Dengan adanya tampilan yang interaktif dan informatif, pengguna dapat memperoleh rekomendasi kost sekaligus memahami proses pengambilan keputusan yang dilakukan oleh sistem.
+
+## BAB V Pengujian dan Analisis
+
+### 5.1 Skenario Pengujian
+
+Pengujian sistem dilakukan untuk memastikan bahwa seluruh fitur pada DSS Pemilihan Kost dapat berjalan sesuai dengan kebutuhan yang telah dirancang. Pengujian difokuskan pada proses pemilihan kriteria, pelaksanaan algoritma Breadth First Search (BFS), tampilan rekomendasi kost, serta visualisasi Directed Graph. Setiap fungsi diuji dengan memberikan berbagai kombinasi kriteria untuk mengetahui apakah sistem mampu menghasilkan rekomendasi yang sesuai.
+
+Pada skenario pertama, pengguna memilih kriteria Murah. Sistem kemudian menjalankan algoritma BFS dan menampilkan rekomendasi kost yang terhubung dengan node kriteria tersebut, yaitu Kost A dan Kost C. Pada skenario kedua, pengguna memilih kriteria Dekat Kampus, sehingga sistem menampilkan Kost B dan Kost C sebagai hasil rekomendasi. Selanjutnya, pada skenario ketiga pengguna memilih kriteria WiFi, dan sistem menampilkan Kost A serta Kost D sebagai alternatif kost yang memenuhi kriteria tersebut.
+
+Selain pengujian kriteria tunggal, dilakukan juga pengujian dengan memilih lebih dari satu kriteria secara bersamaan. Sistem diharapkan mampu menampilkan seluruh alternatif kost yang sesuai berdasarkan hasil penelusuran BFS. Hasil pengujian menunjukkan bahwa sistem berhasil menjalankan fungsi pencarian, menampilkan proses penelusuran graph, menghasilkan rekomendasi kost yang sesuai dengan kriteria yang dipilih, serta menampilkan visualisasi Directed Graph dengan baik. Dengan demikian, seluruh fitur utama pada sistem dapat berjalan sesuai dengan tujuan yang telah ditetapkan.
+
+### 5.2 Analisis Hasil
+
+Berdasarkan hasil pengujian yang telah dilakukan, sistem DSS Pemilihan Kost mampu menjalankan seluruh fungsi utama sesuai dengan perancangan yang telah dibuat. Pengguna dapat memilih satu atau lebih kriteria kost, kemudian sistem akan memproses pilihan tersebut menggunakan struktur data Directed Graph dan algoritma Breadth First Search (BFS). Hasil pengujian menunjukkan bahwa sistem berhasil menampilkan rekomendasi kost yang sesuai dengan kriteria yang dipilih serta menampilkan proses penelusuran graph secara jelas.
+
+Penerapan algoritma Breadth First Search (BFS) terbukti mampu melakukan penelusuran node secara sistematis berdasarkan hubungan yang terdapat pada graph. Ketika pengguna memilih suatu kriteria, BFS akan mengunjungi node-node yang terhubung hingga menemukan alternatif kost yang memenuhi kriteria tersebut. Proses ini berjalan dengan baik tanpa terjadi pengulangan node karena sistem menggunakan mekanisme pencatatan node yang telah dikunjungi. Dengan demikian, hasil rekomendasi yang diberikan sesuai dengan struktur graph yang telah dibangun.
+
+Selain itu, visualisasi Directed Graph yang ditampilkan membantu pengguna memahami hubungan antara kriteria dan alternatif kost yang tersedia. Pengguna tidak hanya memperoleh hasil rekomendasi, tetapi juga dapat melihat bagaimana proses pencarian dilakukan oleh sistem. Secara keseluruhan, hasil implementasi menunjukkan bahwa penggunaan Directed Graph dan algoritma BFS efektif dalam mendukung proses pengambilan keputusan pada pemilihan kost. Sistem yang dibangun telah memenuhi tujuan penelitian, yaitu memberikan rekomendasi kost secara cepat, terstruktur, dan mudah dipahami oleh pengguna.
+
+### 5.3 Kompleksitas Algoritma
+
+Algoritma yang digunakan dalam sistem ini adalah Breadth First Search (BFS), yaitu algoritma pencarian pada graph yang bekerja dengan cara menelusuri setiap node secara bertahap berdasarkan tingkat kedekatannya dari node awal. BFS menggunakan struktur data queue (antrian) untuk menyimpan node yang akan dikunjungi sehingga setiap node dapat diproses secara sistematis tanpa terjadi pengulangan penelusuran.
+
+Kompleksitas waktu (time complexity) dari algoritma BFS adalah O(V + E), di mana V (Vertex) merupakan jumlah node dan E (Edge) merupakan jumlah sisi atau hubungan antar node dalam graph. Kompleksitas ini terjadi karena BFS akan mengunjungi setiap node paling banyak satu kali dan memeriksa setiap edge yang terhubung selama proses penelusuran. Pada sistem DSS Pemilihan Kost yang dibangun, jumlah node dan edge relatif sedikit sehingga proses pencarian dapat dilakukan dengan sangat cepat dan efisien.
+
+Selain kompleksitas waktu, BFS juga memiliki kompleksitas ruang (space complexity) sebesar O(V). Hal ini disebabkan karena algoritma membutuhkan memori tambahan untuk menyimpan node yang telah dikunjungi serta queue yang digunakan selama proses pencarian. Meskipun demikian, kebutuhan memori tersebut masih tergolong efisien untuk ukuran graph yang digunakan pada sistem ini. Oleh karena itu, algoritma BFS dinilai sesuai untuk diterapkan pada DSS Pemilihan Kost karena mampu memberikan hasil rekomendasi secara cepat, terstruktur, dan mudah diimplementasikan.
+
+## BAB VI Penutupan
+
+### 6.1 Kesimpulan
+
+Berdasarkan hasil perancangan, implementasi, dan pengujian yang telah dilakukan, dapat disimpulkan bahwa Sistem Pendukung Keputusan (DSS) Pemilihan Kost berhasil dibangun dengan memanfaatkan struktur data Directed Graph dan algoritma Breadth First Search (BFS). Directed Graph digunakan untuk merepresentasikan hubungan antara pengguna, kriteria pemilihan, dan alternatif kost, sehingga data dapat dikelola secara terstruktur dan mudah dipahami.
+
+Hasil pengujian menunjukkan bahwa algoritma BFS mampu melakukan penelusuran node secara efektif untuk menemukan alternatif kost yang sesuai dengan kriteria yang dipilih pengguna. Sistem juga berhasil menampilkan rekomendasi kost, proses penelusuran graph, serta visualisasi graph yang membantu pengguna memahami proses pengambilan keputusan yang dilakukan oleh sistem.
+
+Dengan demikian, DSS Pemilihan Kost yang dikembangkan telah memenuhi tujuan penelitian, yaitu membantu pengguna dalam memilih kost secara lebih cepat, mudah, dan terstruktur. Selain itu, penelitian ini menunjukkan bahwa penerapan struktur data graph dan algoritma BFS dapat digunakan secara efektif sebagai dasar pengambilan keputusan pada permasalahan nyata, khususnya dalam proses pemilihan kost.
+
+### 6.2 Saran Pengembangan
+
+Meskipun sistem yang dibangun telah mampu memberikan rekomendasi kost berdasarkan kriteria yang dipilih pengguna, masih terdapat beberapa pengembangan yang dapat dilakukan untuk meningkatkan kualitas sistem. Pengembangan tersebut antara lain menambahkan lebih banyak kriteria penilaian, seperti harga sewa, jarak dari kampus, keamanan, kebersihan lingkungan, ketersediaan kamar, dan fasilitas pendukung lainnya. Selain itu, sistem dapat diintegrasikan dengan database agar data kost dapat dikelola dan diperbarui secara dinamis, serta dilengkapi dengan antarmuka yang lebih menarik dan interaktif melalui fitur pencarian, filter, dan informasi detail setiap kost.
+
+Dari sisi metode, penelitian selanjutnya dapat mengembangkan sistem dengan membandingkan atau mengombinasikan algoritma BFS dengan metode pengambilan keputusan lainnya, seperti Simple Additive Weighting (SAW) dan Technique for Order Preference by Similarity to Ideal Solution (TOPSIS), sehingga rekomendasi yang dihasilkan menjadi lebih akurat dan optimal. Dengan adanya berbagai pengembangan tersebut, sistem diharapkan dapat memberikan hasil yang lebih efektif, informatif, dan sesuai dengan kebutuhan pengguna di masa mendatang.
 
 
 
