@@ -9,7 +9,7 @@ from collections import deque
 
 st.set_page_config(
     page_title="DSS Pemilihan Kost",
-    page_icon="🏠",
+    page_icon="icon.png",
     layout="wide"
 )
 
@@ -57,11 +57,11 @@ h1 {
 # =====================================================
 
 st.sidebar.image(
-    "https://cdn-icons-png.flaticon.com/512/619/619032.png",
+    "icon.png",
     width=120
 )
 
-st.sidebar.title("🏠 DSS Kost")
+st.sidebar.title("DSS Kost")
 
 st.sidebar.info("""
 Sistem Pendukung Keputusan
@@ -158,11 +158,747 @@ def bfs(graph, start):
 # =====================================================
 
 st.image(
-    "sampul.png",
+    "banner.png",
     use_container_width=True
 )
 
-st.title("🏠 DSS Pemilihan Kost")
+st.title("DSS Pemilihan Kost")
+
+st.markdown("""
+### Sistem Pendukung Keputusan Pemilihan Kost
+
+Aplikasi ini membantu mahasiswa menentukan kost terbaik
+berdasarkan kriteria yang dipilih menggunakan:
+
+- Directed Graph
+- Breadth First Search (BFS)
+""")
+
+st.divider()
+
+# =====================================================
+# INPUT USER
+# =====================================================
+
+st.subheader("📋 Pilih Kriteria")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    murah = st.checkbox("💰 Murah")
+
+with col2:
+    dekat = st.checkbox("🏫 Dekat Kampus")
+
+with col3:
+    wifi = st.checkbox("📶 WiFi")
+
+kriteria = []
+
+if murah:
+    kriteria.append("Murah")
+
+if dekat:
+    kriteria.append("Dekat Kampus")
+
+if wifi:
+    kriteria.append("WiFi")
+
+# =====================================================
+# PROSES DSS
+# =====================================================
+
+if st.button("🔍 Cari Rekomendasi Kost"):
+
+    if len(kriteria) == 0:
+
+        st.warning("Silakan pilih minimal satu kriteria.")
+
+    else:
+
+        rekomendasi = set()
+        proses_bfs = []
+
+        for k in kriteria:
+
+            hasil, jalur = bfs(graph, k)
+
+            rekomendasi.update(hasil)
+            proses_bfs.extend(jalur)
+
+        st.success("Rekomendasi Kost Berhasil Ditemukan")
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            st.metric(
+                "Jumlah Rekomendasi",
+                len(rekomendasi)
+            )
+
+        with c2:
+            st.metric(
+                "Kriteria Dipilih",
+                len(kriteria)
+            )
+
+        st.subheader("🏠 Rekomendasi Kost")
+
+        for kost in sorted(rekomendasi):
+
+            col1, col2 = st.columns([1,2])
+
+            with col1:
+                st.image(
+                    gambar_kost[kost],
+                    use_container_width=True
+                )
+
+            with col2:
+
+                st.markdown(f"""
+                <div class='card'>
+                <h3>{kost}</h3>
+
+                💰 Harga:
+                Rp {kost_data[kost]['harga']:,}/bulan
+
+                <br><br>
+
+                📌 Fasilitas:
+                {', '.join(kost_data[kost]['fasilitas'])}
+
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.subheader("🔎 Jalur BFS")
+
+        st.info(" ➜ ".join(proses_bfs))
+
+# =====================================================
+# VISUALISASI GRAPH
+# =====================================================
+
+st.divider()
+
+st.subheader("📊 Visualisasi Directed Graph")
+
+G = nx.DiGraph()
+
+for node in graph:
+    for tujuan in graph[node]:
+        G.add_edge(node, tujuan)
+
+pos = {
+    "User": (0, 3),
+
+    "Murah": (-3, 1),
+    "Dekat Kampus": (0, 1),
+    "WiFi": (3, 1),
+
+    "Kost A": (-4, -1),
+    "Kost C": (-1, -1),
+    "Kost B": (1, -1),
+    "Kost D": (4, -1)
+}
+
+node_colors = []
+
+for node in G.nodes():
+
+    if node == "User":
+        node_colors.append("gold")
+
+    elif "Kost" in node:
+        node_colors.append("lightgreen")
+
+    else:
+        node_colors.append("skyblue")
+
+fig, ax = plt.subplots(figsize=(12, 7))
+
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color=node_colors,
+    node_size=4000,
+    font_size=10,
+    font_weight="bold",
+    arrows=True,
+    width=2,
+    ax=ax
+)
+
+plt.title("Directed Graph DSS Pemilihan Kost")
+
+st.pyplot(fig)
+
+# =====================================================
+# ANALISIS BFS
+# =====================================================
+
+st.divider()
+
+st.subheader("📚 Analisis Algoritma BFS")
+
+st.write("""
+Breadth First Search (BFS) adalah algoritma pencarian graph
+yang bekerja secara level-by-level.
+
+Kompleksitas Waktu:
+O(V + E)
+
+Kompleksitas Ruang:
+O(V)
+
+Keterangan:
+- V = Jumlah Node
+- E = Jumlah Edge
+""")
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.divider()
+
+st.caption(
+    "Project UAS Struktur Data | DSS Pemilihan Kost "
+    "Menggunakan Directed Graph dan BFS"
+)import streamlit as st
+import networkx as nx
+import matplotlib.pyplot as plt
+from collections import deque
+
+# =====================================================
+# KONFIGURASI HALAMAN
+# =====================================================
+
+st.set_page_config(
+    page_title="DSS Pemilihan Kost",
+    page_icon="icon.png",
+    layout="wide"
+)
+
+# =====================================================
+# CSS MODERN
+# =====================================================
+
+st.markdown("""
+<style>
+
+.main {
+    background: linear-gradient(to right, #eef2f3, #d9e4f5);
+}
+
+h1 {
+    color: #1f4e79;
+    text-align: center;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 15px;
+}
+
+.stButton > button {
+    background-color: #1f77b4;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+}
+
+.stButton > button:hover {
+    background-color: #145a86;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =====================================================
+# SIDEBAR
+# =====================================================
+
+st.sidebar.image(
+    "icon.png",
+    width=120
+)
+
+st.sidebar.title("DSS Kost")
+
+st.sidebar.info("""
+Sistem Pendukung Keputusan
+Pemilihan Kost Mahasiswa
+
+Metode:
+✔ Directed Graph
+✔ Breadth First Search (BFS)
+""")
+
+# =====================================================
+# GAMBAR KOST
+# =====================================================
+
+gambar_kost = {
+    "Kost A": "kos a.png",
+    "Kost B": "kos b.png",
+    "Kost C": "kos c.png",
+    "Kost D": "kos d.png"
+}
+
+# =====================================================
+# DATA KOST
+# =====================================================
+
+kost_data = {
+    "Kost A": {
+        "harga": 700000,
+        "fasilitas": ["Murah", "WiFi"]
+    },
+    "Kost B": {
+        "harga": 900000,
+        "fasilitas": ["Dekat Kampus"]
+    },
+    "Kost C": {
+        "harga": 800000,
+        "fasilitas": ["Murah", "Dekat Kampus"]
+    },
+    "Kost D": {
+        "harga": 1000000,
+        "fasilitas": ["WiFi"]
+    }
+}
+
+# =====================================================
+# GRAPH
+# =====================================================
+
+graph = {
+    "User": ["Murah", "Dekat Kampus", "WiFi"],
+
+    "Murah": ["Kost A", "Kost C"],
+    "Dekat Kampus": ["Kost B", "Kost C"],
+    "WiFi": ["Kost A", "Kost D"],
+
+    "Kost A": [],
+    "Kost B": [],
+    "Kost C": [],
+    "Kost D": []
+}
+
+# =====================================================
+# BFS
+# =====================================================
+
+def bfs(graph, start):
+
+    visited = set()
+    queue = deque([start])
+
+    rekomendasi = []
+    jalur = []
+
+    while queue:
+
+        node = queue.popleft()
+
+        if node not in visited:
+
+            visited.add(node)
+            jalur.append(node)
+
+            if "Kost" in node:
+                rekomendasi.append(node)
+
+            for tetangga in graph[node]:
+                if tetangga not in visited:
+                    queue.append(tetangga)
+
+    return rekomendasi, jalur
+
+# =====================================================
+# HEADER
+# =====================================================
+
+st.image(
+    "banner.png",
+    use_container_width=True
+)
+
+st.title("DSS Pemilihan Kost")
+
+st.markdown("""
+### Sistem Pendukung Keputusan Pemilihan Kost
+
+Aplikasi ini membantu mahasiswa menentukan kost terbaik
+berdasarkan kriteria yang dipilih menggunakan:
+
+- Directed Graph
+- Breadth First Search (BFS)
+""")
+
+st.divider()
+
+# =====================================================
+# INPUT USER
+# =====================================================
+
+st.subheader("📋 Pilih Kriteria")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    murah = st.checkbox("💰 Murah")
+
+with col2:
+    dekat = st.checkbox("🏫 Dekat Kampus")
+
+with col3:
+    wifi = st.checkbox("📶 WiFi")
+
+kriteria = []
+
+if murah:
+    kriteria.append("Murah")
+
+if dekat:
+    kriteria.append("Dekat Kampus")
+
+if wifi:
+    kriteria.append("WiFi")
+
+# =====================================================
+# PROSES DSS
+# =====================================================
+
+if st.button("🔍 Cari Rekomendasi Kost"):
+
+    if len(kriteria) == 0:
+
+        st.warning("Silakan pilih minimal satu kriteria.")
+
+    else:
+
+        rekomendasi = set()
+        proses_bfs = []
+
+        for k in kriteria:
+
+            hasil, jalur = bfs(graph, k)
+
+            rekomendasi.update(hasil)
+            proses_bfs.extend(jalur)
+
+        st.success("Rekomendasi Kost Berhasil Ditemukan")
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            st.metric(
+                "Jumlah Rekomendasi",
+                len(rekomendasi)
+            )
+
+        with c2:
+            st.metric(
+                "Kriteria Dipilih",
+                len(kriteria)
+            )
+
+        st.subheader("🏠 Rekomendasi Kost")
+
+        for kost in sorted(rekomendasi):
+
+            col1, col2 = st.columns([1,2])
+
+            with col1:
+                st.image(
+                    gambar_kost[kost],
+                    use_container_width=True
+                )
+
+            with col2:
+
+                st.markdown(f"""
+                <div class='card'>
+                <h3>{kost}</h3>
+
+                💰 Harga:
+                Rp {kost_data[kost]['harga']:,}/bulan
+
+                <br><br>
+
+                📌 Fasilitas:
+                {', '.join(kost_data[kost]['fasilitas'])}
+
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.subheader("🔎 Jalur BFS")
+
+        st.info(" ➜ ".join(proses_bfs))
+
+# =====================================================
+# VISUALISASI GRAPH
+# =====================================================
+
+st.divider()
+
+st.subheader("📊 Visualisasi Directed Graph")
+
+G = nx.DiGraph()
+
+for node in graph:
+    for tujuan in graph[node]:
+        G.add_edge(node, tujuan)
+
+pos = {
+    "User": (0, 3),
+
+    "Murah": (-3, 1),
+    "Dekat Kampus": (0, 1),
+    "WiFi": (3, 1),
+
+    "Kost A": (-4, -1),
+    "Kost C": (-1, -1),
+    "Kost B": (1, -1),
+    "Kost D": (4, -1)
+}
+
+node_colors = []
+
+for node in G.nodes():
+
+    if node == "User":
+        node_colors.append("gold")
+
+    elif "Kost" in node:
+        node_colors.append("lightgreen")
+
+    else:
+        node_colors.append("skyblue")
+
+fig, ax = plt.subplots(figsize=(12, 7))
+
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color=node_colors,
+    node_size=4000,
+    font_size=10,
+    font_weight="bold",
+    arrows=True,
+    width=2,
+    ax=ax
+)
+
+plt.title("Directed Graph DSS Pemilihan Kost")
+
+st.pyplot(fig)
+
+# =====================================================
+# ANALISIS BFS
+# =====================================================
+
+st.divider()
+
+st.subheader("📚 Analisis Algoritma BFS")
+
+st.write("""
+Breadth First Search (BFS) adalah algoritma pencarian graph
+yang bekerja secara level-by-level.
+
+Kompleksitas Waktu:
+O(V + E)
+
+Kompleksitas Ruang:
+O(V)
+
+Keterangan:
+- V = Jumlah Node
+- E = Jumlah Edge
+""")
+
+# =====================================================
+# FOOTER
+# =====================================================
+
+st.divider()
+
+st.caption(
+    "Project UAS Struktur Data | DSS Pemilihan Kost "
+    "Menggunakan Directed Graph dan BFS"
+)import streamlit as st
+import networkx as nx
+import matplotlib.pyplot as plt
+from collections import deque
+
+# =====================================================
+# KONFIGURASI HALAMAN
+# =====================================================
+
+st.set_page_config(
+    page_title="DSS Pemilihan Kost",
+    page_icon="icon.png",
+    layout="wide"
+)
+
+# =====================================================
+# CSS MODERN
+# =====================================================
+
+st.markdown("""
+<style>
+
+.main {
+    background: linear-gradient(to right, #eef2f3, #d9e4f5);
+}
+
+h1 {
+    color: #1f4e79;
+    text-align: center;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 15px;
+}
+
+.stButton > button {
+    background-color: #1f77b4;
+    color: white;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+}
+
+.stButton > button:hover {
+    background-color: #145a86;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =====================================================
+# SIDEBAR
+# =====================================================
+
+st.sidebar.image(
+    "icon.png",
+    width=120
+)
+
+st.sidebar.title("DSS Kost")
+
+st.sidebar.info("""
+Sistem Pendukung Keputusan
+Pemilihan Kost Mahasiswa
+
+Metode:
+✔ Directed Graph
+✔ Breadth First Search (BFS)
+""")
+
+# =====================================================
+# GAMBAR KOST
+# =====================================================
+
+gambar_kost = {
+    "Kost A": "kos a.png",
+    "Kost B": "kos b.png",
+    "Kost C": "kos c.png",
+    "Kost D": "kos d.png"
+}
+
+# =====================================================
+# DATA KOST
+# =====================================================
+
+kost_data = {
+    "Kost A": {
+        "harga": 700000,
+        "fasilitas": ["Murah", "WiFi"]
+    },
+    "Kost B": {
+        "harga": 900000,
+        "fasilitas": ["Dekat Kampus"]
+    },
+    "Kost C": {
+        "harga": 800000,
+        "fasilitas": ["Murah", "Dekat Kampus"]
+    },
+    "Kost D": {
+        "harga": 1000000,
+        "fasilitas": ["WiFi"]
+    }
+}
+
+# =====================================================
+# GRAPH
+# =====================================================
+
+graph = {
+    "User": ["Murah", "Dekat Kampus", "WiFi"],
+
+    "Murah": ["Kost A", "Kost C"],
+    "Dekat Kampus": ["Kost B", "Kost C"],
+    "WiFi": ["Kost A", "Kost D"],
+
+    "Kost A": [],
+    "Kost B": [],
+    "Kost C": [],
+    "Kost D": []
+}
+
+# =====================================================
+# BFS
+# =====================================================
+
+def bfs(graph, start):
+
+    visited = set()
+    queue = deque([start])
+
+    rekomendasi = []
+    jalur = []
+
+    while queue:
+
+        node = queue.popleft()
+
+        if node not in visited:
+
+            visited.add(node)
+            jalur.append(node)
+
+            if "Kost" in node:
+                rekomendasi.append(node)
+
+            for tetangga in graph[node]:
+                if tetangga not in visited:
+                    queue.append(tetangga)
+
+    return rekomendasi, jalur
+
+# =====================================================
+# HEADER
+# =====================================================
+
+st.image(
+    "banner.png",
+    use_container_width=True
+)
+
+st.title("DSS Pemilihan Kost")
 
 st.markdown("""
 ### Sistem Pendukung Keputusan Pemilihan Kost
